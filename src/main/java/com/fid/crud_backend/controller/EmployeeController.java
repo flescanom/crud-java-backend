@@ -4,12 +4,14 @@
  */
 package com.fid.crud_backend.controller;
 
+import com.fid.crud_backend.dto.ApiResponse;
 import com.fid.crud_backend.dto.EmployeeDto;
 import com.fid.crud_backend.service.IEmployeeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author flesc
  */
 
+@Slf4j
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/employees")
@@ -34,23 +37,23 @@ public class EmployeeController {
     
     @Operation(summary = "Get a list employees" )
     @GetMapping()
-    public ResponseEntity<List<EmployeeDto>> getEmployees() {
+    public ResponseEntity<ApiResponse<List<EmployeeDto>>> getEmployees() {
         List<EmployeeDto> employeesDto = employeeService.getAllEmployees();
-        return ResponseEntity.ok(employeesDto);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Listado de empleados obtenido correctamente" ,employeesDto));
     }
     
     @Operation(summary = "Get a information employee given a identification" )
     @GetMapping("{employeeId}")
-    public ResponseEntity<EmployeeDto> getEmployeeById(@PathVariable("employeeId") Long employeeId) {
+    public ResponseEntity<ApiResponse<EmployeeDto>> getEmployeeById(@PathVariable("employeeId") Long employeeId) {
         EmployeeDto employeeDto = employeeService.getEmployeeById(employeeId);
-        return ResponseEntity.ok(employeeDto);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Empleado obtenido correctamente ", employeeDto));
     }
 
-    // Build add employee rest api
+    @Operation(summary = "Save a new employee given the necessary data" )
     @PostMapping
-    public ResponseEntity<EmployeeDto> createEmployee(@RequestBody EmployeeDto employeeDto) {
+    public ResponseEntity<ApiResponse<EmployeeDto>> createEmployee(@RequestBody EmployeeDto employeeDto) {
         EmployeeDto savedEmployee = employeeService.createEmployee(employeeDto);
-        return new ResponseEntity<>(savedEmployee, HttpStatus.CREATED);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Empleado guardado correctamente", savedEmployee));
     }
     
 }

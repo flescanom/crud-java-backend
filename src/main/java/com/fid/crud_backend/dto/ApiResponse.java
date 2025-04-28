@@ -2,25 +2,22 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.fid.crud_backend.security.dto;
+package com.fid.crud_backend.dto;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  *
  * @author flesc
+ * @param <T>
  */
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
-public class LoginUserDto {
-    
-    @NotBlank
-    public String username;
-    @NotBlank
-    public String password;
+public class ApiResponse<T> {
+
+    private boolean ok;
+    private String message;
+    private T data;
 }
